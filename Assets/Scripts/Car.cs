@@ -4,18 +4,21 @@ public class Car : MonoBehaviour
 {
     [SerializeField] private float speed = 10f;
     [SerializeField] private float speedGainPerSecond = 0.5f;
-    
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private float turnSpeed = 200f;
 
-    // Update is called once per frame
+    private int steerValue;
+    
     void Update()
     {
         transform.Translate(Vector3.forward * (speed * Time.deltaTime));
+        
+        transform.Rotate(0f, steerValue * turnSpeed * Time.deltaTime, 0f);
 
         speed += speedGainPerSecond * Time.deltaTime;
+    }
+
+    public void Steer(int value)
+    {
+        steerValue = value;
     }
 }
