@@ -5,10 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
+    [SerializeField] private AndroidNotificationHandler androidNotificationHandler;
+    
     [SerializeField] private TMP_Text highScoreText;
     [SerializeField] private TMP_Text energyText;
     [SerializeField] private int maxEnergy;
-    [SerializeField] private int energyRechargeDuration;
+    [SerializeField] private int energyRechargeDurationMinutes = 1;
     
     private const string EnergyKey = "Energy";
     private const string EnergyReadyKey = "EnergyReady";
@@ -56,23 +58,16 @@ public class MainMenu : MonoBehaviour
         //energyText.text = "Play " + energy;
     }
 
-    private void DeductEnergy()
-    {
-        if (energy == 0)
-        {
-            SetRechargeDate();
-            
-        }
-        energy--;
-        PlayerPrefs.SetInt(EnergyKey, energy);
-        Debug.Log("energy is " + energy);
-
-    }
-
     private void SetRechargeDate()
     {
-        DateTime oneMinuteFromNow = DateTime.Now.AddMinutes(1);
-        PlayerPrefs.SetString(EnergyReadyKey, oneMinuteFromNow.ToString());
-        Debug.Log("set energy recharge time to : " + oneMinuteFromNow.ToString());
+        DateTime energyReadyTime = DateTime.Now.AddMinutes(energyRechargeDurationMinutes);
+        PlayerPrefs.SetString(EnergyReadyKey, energyReadyTime.ToString());
+        Debug.Log("set energy recharge time to : " + energyReadyTime.ToString());
+        
+#if UNITY_ANDROID
+        androidNotificationHandler.ScheduleNotification(energyReadyTime);
+#endif
+        
+        
     }
 }
