@@ -737,6 +737,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   androidNotificationHandler: {fileID: 1489527901}
+  playButton: {fileID: 157465852}
   highScoreText: {fileID: 806909191}
   energyText: {fileID: 1230273534}
   maxEnergy: 5
